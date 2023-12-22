@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Discussion Threads</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 0;
+		}
+
+		header {
+			display: flex;
+			background-color: #333;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.thread-card {
+			width: 80%;
+			margin: 20px auto;
+			background-color: white;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+
+		.thread-details {
+			padding: 16px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 12px;
+		}
+
+		th {
+			background-color: #333;
+			color: white;
+		}
+
+		tr:nth-child(even) {
+			background-color: #f9f9f9;
+		}
+
+		a {
+			display: block;
+			text-align: center;
+			padding: 8px 16px;
+			text-decoration: none;
+			background-color: #3498db;
+			color: white;
+			border-radius: 4px;
+			margin: 16px auto;
+			width: fit-content;
+		}
+
+		a:hover {
+			background-color: #2980b9;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<h1>THREADTALK</h1>
+		<div sec:authorize="isAuthenticated()">
+			<a th:href="@{/logout}">Logout</a>
+		</div>
+		<div sec:authorize="!isAuthenticated()">
+			<a th:href="@{/login}">Login</a>
+		</div>
+	</header>
+
+	<div th:each="t:${threads}" class="thread-card">
+		<div class="thread-details">
+			<h2 th:text="${t.title}"></h2>
+			<p>Started By: <span th:text="${t.username}"></span></p>
+		</div>
+		<a th:href="@{/view/{threadId}(threadId=${t.threadId})}">Start Talking</a>
+	</div>
+
+	<a th:href="@{/startThread}">Start a new Thread</a>
+	<div sec:authorize="hasRole('MANAGER')">
+		<a th:href="@{/manageThreads}">Manage Threads</a>
+		<a th:href="@{/register}">Register New User</a>
+	</div>
+
+</body>
+
+</html>

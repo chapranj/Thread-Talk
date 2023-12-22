@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Discussion Forum</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		h1 {
+			background-color: #3498db;
+			color: white;
+			padding: 15px;
+			margin: 0;
+			width: 100%;
+			text-align: center;
+		}
+
+		.welcome-section {
+			display: flex;
+			justify-content: space-between;
+			width: 80%;
+			margin: 20px 0;
+		}
+
+		.discussion-section {
+			width: 80%;
+			margin-bottom: 20px;
+		}
+
+		.chat-message {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			padding: 10px;
+			margin-bottom: 10px;
+			width: 100%;
+		}
+
+		form {
+			width: 80%;
+			margin-top: 20px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		textarea {
+			margin-bottom: 15px;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+		}
+
+		input[type="hidden"] {
+			display: none;
+		}
+
+		button {
+			background-color: #3498db;
+			color: white;
+			padding: 10px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #2980b9;
+		}
+
+		a {
+			color: #3498db;
+			text-decoration: none;
+			margin-top: 10px;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>THREADTALK</h1>
+
+	<div class="welcome-section">
+		<h2>Welcome: <span sec:authentication="name"></span></h2>
+		<h2 th:text="|Posts in Thread: ${title}|"></h2>
+	</div>
+
+	<div class="discussion-section">
+		<div class="chat-message" th:each="p : ${posts}">
+			<p th:text="${p.content}"></p>
+			<span th:text="${p.username + ' • ' + p.date}"></span>
+			<a th:href="@{/delete/{postId}(postId=${p.postId},threadId=${p.threadId})}">Delete</a>
+		</div>
+	</div>
+
+	<form th:action="@{/addPost}" th:method="post" th:object="${post}">
+		<textarea id="postContent" name="content" th:field="*{content}" rows="4"
+			placeholder="Write your post..."></textarea>
+		<input type="hidden" name="threadId" th:value="${threadId}">
+		<input type="hidden" name="username" th:value="${#authentication.getName()}">
+		<button type="submit">Add Post</button>
+	</form>
+
+	<a th:href="@{/}">View All Threads</a>
+
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Log Out">
+	</form>
+	<script src="/js/script.js"></script>
+</body>
+
+</html>

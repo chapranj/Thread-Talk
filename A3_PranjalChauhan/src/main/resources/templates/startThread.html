@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Discussion Thread</title>
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #f4f4f4;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		form {
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			padding: 20px;
+			width: 400px;
+			text-align: center;
+		}
+
+		textarea {
+			width: 100%;
+			padding: 10px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+			resize: none;
+			font-size: 14px;
+		}
+
+		input[type="hidden"],
+		button {
+			width: 100%;
+			padding: 10px;
+			background-color: #007BFF;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		p {
+			font-size: 14px;
+			color: #777;
+			margin-top: 10px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+		}
+	</style>
+</head>
+
+<body>
+	<form th:action="@{/addThread}" th:method="post" th:object="${thread}">
+		<textarea id="threadContent" name="content" th:field="*{title}" rows="4"
+			placeholder="Start a thread ..."></textarea>
+		<input type="hidden" name="username" th:value="${#authentication.getName()}">
+		<button type="submit">Add Thread</button>
+		<p>Your fellow employees will be able to see the thread you start.</p>
+	</form>
+</body>
+
+</html>
